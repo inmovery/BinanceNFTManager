@@ -70,9 +70,9 @@ namespace BinanceNFT.Helpers
 			}
 		}
 
-		public string HttpGet(string Url, string postDataStr)
+		public static string HttpGet(string webAddress)
 		{
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
 			request.Method = "GET";
 			request.ContentType = "application/json";
 

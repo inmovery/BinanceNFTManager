@@ -82,6 +82,10 @@
     <Compile Include="Controls\AlignableWrapPanel.cs" />
     <Compile Include="Helpers\CookiesHandler.cs" />
     <Compile Include="Helpers\HttpRequestHelper.cs" />
+    <Compile Include="Models\Box.cs" />
+    <Compile Include="Models\Boxes.cs" />
+    <Compile Include="Models\BoxesRequest.cs" />
+    <Compile Include="Models\BoxesRequestParams.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Styles\Buttons.xaml">
@@ -175,5 +179,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
