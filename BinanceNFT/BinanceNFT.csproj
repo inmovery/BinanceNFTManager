@@ -50,6 +50,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.14\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -71,6 +80,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\AlignableWrapPanel.cs" />
+    <Compile Include="Helpers\CookiesHandler.cs" />
     <Compile Include="Helpers\HttpRequestHelper.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -144,6 +154,7 @@
     <Resource Include="Fonts\Montserrat-Regular.ttf" />
     <Resource Include="Fonts\Montserrat-SemiBold.ttf" />
     <Resource Include="Fonts\Montserrat-Thin.ttf" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

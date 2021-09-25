@@ -5,20 +5,47 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Windows;
 
 namespace BinanceNFT.Helpers
 {
 	public class HttpRequestHelper
 	{
-		public static string HttpPost(string Url, string postDataStr, ref bool isSuccess)
+		public static string HttpPost(string webAddress, string postDataStr, string cookies, ref bool isSuccess)
 		{
 			try
 			{
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
 				request.Method = "POST";
 				request.ContentType = "application/json";
 				request.ContentLength = Encoding.UTF8.GetByteCount(postDataStr);
-				//request.CookieContainer = cookie;
+
+				var cookieContainer = new CookieContainer();
+				var res = cookies.Split(';');
+				foreach (var cookie in res)
+				{
+					try
+					{
+						string name = cookie.Split('=')[0];
+						string value = cookie.Substring(name.Length + 1);
+
+						var trimmedItem = cookie.Trim();
+						string path = "/";
+						string domain = "binance.com";
+						Cookie cookieItem = new Cookie(name.Trim(), @value.Trim(), path, domain);
+						cookieContainer.Add(cookieItem);
+					}
+					catch
+					{
+						// ignored
+					}
+				}
+
+				request.CookieContainer = cookieContainer;
+
+				// var cookies = new Cookie("CookieName", cookie);
+				// request.TryAddCookie(cookies);
+
 				Stream myRequestStream = request.GetRequestStream();
 				StreamWriter myStreamWriter = new StreamWriter(myRequestStream, Encoding.GetEncoding("gb2312"));
 				myStreamWriter.Write(postDataStr);
@@ -38,7 +65,7 @@ namespace BinanceNFT.Helpers
 			catch (Exception e)
 			{
 				isSuccess = false;
-				Console.Write(e.Message);
+				MessageBox.Show(e.Message);
 				return e.Message;
 			}
 		}
