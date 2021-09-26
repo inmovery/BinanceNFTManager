@@ -1,4 +1,3 @@
-C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\BinanceNFT.csproj.AssemblyReference.cache
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\Buttons.baml
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\Colors.baml
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\ContentControls.baml
@@ -29,3 +28,10 @@ C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Newtonsoft.Json.B
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Newtonsoft.Json.Bson.xml
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Newtonsoft.Json.Schema.xml
 C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\BinanceNFT.csproj.CopyComplete
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\ComboBox.baml
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\TextBlock.baml
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\Styles\ScrollViewer.baml
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\inmovery\source\repos\BinanceNFT\BinanceNFT\obj\Debug\BinanceNFT.csproj.AssemblyReference.cache

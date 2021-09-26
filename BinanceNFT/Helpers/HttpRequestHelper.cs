@@ -26,13 +26,12 @@ namespace BinanceNFT.Helpers
 				{
 					try
 					{
-						string name = cookie.Split('=')[0];
-						string value = cookie.Substring(name.Length + 1);
+						var name = cookie.Split('=')[0];
+						var value = cookie.Substring(name.Length + 1);
+						var path = "/";
+						var domain = "binance.com";
 
-						var trimmedItem = cookie.Trim();
-						string path = "/";
-						string domain = "binance.com";
-						Cookie cookieItem = new Cookie(name.Trim(), @value.Trim(), path, domain);
+						var cookieItem = new Cookie(name.Trim(), @value.Trim(), path, domain);
 						cookieContainer.Add(cookieItem);
 					}
 					catch
@@ -43,22 +42,19 @@ namespace BinanceNFT.Helpers
 
 				request.CookieContainer = cookieContainer;
 
-				// var cookies = new Cookie("CookieName", cookie);
-				// request.TryAddCookie(cookies);
+				var requestStream = request.GetRequestStream();
+				var streamWriter = new StreamWriter(requestStream, Encoding.GetEncoding("gb2312"));
+				streamWriter.Write(postDataStr);
+				streamWriter.Close();
 
-				Stream myRequestStream = request.GetRequestStream();
-				StreamWriter myStreamWriter = new StreamWriter(myRequestStream, Encoding.GetEncoding("gb2312"));
-				myStreamWriter.Write(postDataStr);
-				myStreamWriter.Close();
-
-				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
+				var response = (HttpWebResponse)request.GetResponse();
 				//response.Cookies = cookie.GetCookies(response.ResponseUri);
-				Stream myResponseStream = response.GetResponseStream();
-				StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-				string retString = myStreamReader.ReadToEnd();
-				myStreamReader.Close();
-				myResponseStream.Close();
+
+				var responseStream = response.GetResponseStream();
+				var streamReader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
+				var retString = streamReader.ReadToEnd();
+				streamReader.Close();
+				responseStream.Close();
 
 				return retString;
 			}
@@ -72,18 +68,21 @@ namespace BinanceNFT.Helpers
 
 		public static string HttpGet(string webAddress)
 		{
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
+			var request = (HttpWebRequest)WebRequest.Create(webAddress);
 			request.Method = "GET";
 			request.ContentType = "application/json";
 
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			Stream myResponseStream = response.GetResponseStream();
-			StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-			string retString = myStreamReader.ReadToEnd();
-			myStreamReader.Close();
-			myResponseStream.Close();
+			var response = (HttpWebResponse)request.GetResponse();
+			var responseStream = response.GetResponseStream();
+			if (responseStream == null)
+				return string.Empty;
 
-			return retString;
+			var streamReader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
+			var responseString = streamReader.ReadToEnd();
+			streamReader.Close();
+			responseStream.Close();
+
+			return responseString;
 		}
 
 		/// <summary>  

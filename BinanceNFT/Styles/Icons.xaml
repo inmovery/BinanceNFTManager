@@ -6,7 +6,7 @@
 				   Height="1"
 				   RadiusX="0.5"
 				   RadiusY="0.5"
-				   Fill="#FF8F8F8F" />
+				   Fill="#000000" />
 	</Grid>
 
 	<Grid x:Key="IconMaximize"
@@ -17,7 +17,7 @@
 				   RadiusY="1.5"
 				   Canvas.Left="0.5"
 				   Canvas.Top="0.5"
-				   Stroke="#FF8F8F8F" />
+				   Stroke="#000000" />
 	</Grid>
 
 	<Grid x:Key="IconExit"
@@ -32,7 +32,7 @@
 					   Height="1.27279"
 					   RadiusX="0.636395"
 					   RadiusY="0.636395"
-					   Fill="#FF8F8F8F">
+					   Fill="#000000">
 				<Rectangle.RenderTransform>
 					<MatrixTransform Matrix="0.707106 0.707108 -0.707106 0.707108 0.900055 9.53674e-07" />
 				</Rectangle.RenderTransform>
@@ -41,7 +41,7 @@
 					   Height="1.27279"
 					   RadiusX="0.636395"
 					   RadiusY="0.636395"
-					   Fill="#FF8F8F8F">
+					   Fill="#000000">
 				<Rectangle.RenderTransform>
 					<MatrixTransform Matrix="0.707106 -0.707108 0.707106 0.707108 0 17.1" />
 				</Rectangle.RenderTransform>

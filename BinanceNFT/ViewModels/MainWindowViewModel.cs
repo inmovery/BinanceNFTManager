@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -13,24 +13,166 @@ namespace BinanceNFT.ViewModels
 {
 	public class MainWindowViewModel : BaseViewModel
 	{
-		private List<Box> _boxes;
+		private readonly int _startIndex = 5;
+		private List<Box> _tempBoxes;
 
-		public MainWindowViewModel()
+		/// <summary>
+		/// The _window this view model controls
+		/// </summary>
+		private readonly Window _window;
+
+		/// <summary>
+		/// The margin around the activeWindow to allow for a drop shadow
+		/// </summary>
+		private int _outerMarginSize = 5;
+
+		/// <summary>
+		/// The radius of the edges of the activeWindow
+		/// </summary>
+		private int _windowRadius = 0;
+
+		/// <summary>
+		/// The smallest width the activeWindow can go to
+		/// </summary>
+		public double WindowMinimumWidth { get; set; } = 900;
+
+		/// <summary>
+		/// The smallest height the activeWindow can go to
+		/// </summary>
+		public double WindowMinimumHeight { get; set; } = 500;
+
+		/// <summary>
+		/// The size of the resize border around the activeWindow
+		/// </summary>
+		public int ResizeBorder { get; set; } = 6;
+
+		/// <summary>
+		/// The size of the resize border, taking into account the outer margin
+		/// </summary>
+		public Thickness ResizeBorderThickness => new Thickness(ResizeBorder + OuterMarginSize);
+
+		/// <summary>
+		/// The padding of the inner content of the main activeWindow
+		/// </summary>
+		public Thickness InnerContentPadding => new Thickness(ResizeBorder);
+
+		/// <summary>
+		/// The margin around the activeWindow to allow for a drop shadow
+		/// </summary>
+		public int OuterMarginSize
 		{
+			get => _window.WindowState == WindowState.Maximized ? 0 : _outerMarginSize;
+			set => _outerMarginSize = value;
+		}
+
+		/// <summary>
+		/// The margin around the activeWindow to allow for a drop shadow
+		/// </summary>
+		public Thickness OuterMarginSizeThickness => new Thickness(OuterMarginSize);
+
+		/// <summary>
+		/// The radius of the edges of the activeWindow
+		/// </summary>
+		public int WindowRadius
+		{
+			get => _window.WindowState == WindowState.Maximized ? 0 : _windowRadius;
+			set => _windowRadius = value;
+		}
+
+		/// <summary>
+		/// The radius of the edges of the activeWindow
+		/// </summary>
+		public CornerRadius WindowCornerRadius => new CornerRadius(WindowRadius);
+
+		/// <summary>
+		/// The height of the title bar / caption of the activeWindow
+		/// </summary>
+		public int TitleHeight { get; set; } = 40;
+
+		/// <summary>
+		/// The height of the title bar / caption of the activeWindow
+		/// </summary>
+		public GridLength TitleHeightGridLength => new GridLength(TitleHeight + ResizeBorder);
+
+		#region Commands for Controls
+
+		/// <summary>
+		/// The command to minimize the activeWindow
+		/// </summary>
+		public ICommand MinimizeCommand { get; set; }
+
+		/// <summary>
+		/// The command to maximize the activeWindow
+		/// </summary>
+		public ICommand MaximizeCommand { get; set; }
+
+		/// <summary>
+		/// The command to close the activeWindow
+		/// </summary>
+		public ICommand CloseCommand { get; set; }
+
+		/// <summary>
+		/// The command to show system menu of the activeWindow
+		/// </summary>
+		public ICommand MenuCommand { get; set; }
+
+		#endregion Commands for Controls
+
+		public MainWindowViewModel(Window window)
+		{
+			_window = window;
+
+			_window.StateChanged += (sender, e) => {
+				OnPropertyChanged(nameof(ResizeBorderThickness));
+				OnPropertyChanged(nameof(OuterMarginSize));
+				OnPropertyChanged(nameof(OuterMarginSizeThickness));
+				OnPropertyChanged(nameof(WindowRadius));
+				OnPropertyChanged(nameof(WindowCornerRadius));
+
+				OnPropertyChanged(nameof(WindowMinimumWidth));
+				OnPropertyChanged(nameof(WindowMinimumHeight));
+			};
+
+			MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
+			MaximizeCommand = new RelayCommand(() => _window.WindowState ^= WindowState.Maximized);
+			CloseCommand = new RelayCommand(() => _window.Close());
+			MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePosition()));
+
 			Boxes = new List<Box>();
 			SendRequestCommand = new RelayCommand(SendRequest);
+			ShowMoreBoxesCommand = new RelayCommand(ShowMoreBoxes);
+			MysteryBoxSelectionCommand = new RelayCommand<Box>(MysteryBoxSelectionExecutor);
+
+			SendRequest();
 		}
 
 		public ICommand SendRequestCommand { get; }
+		public ICommand ShowMoreBoxesCommand { get; }
 
-		public List<Box> Boxes
+		public ICommand MysteryBoxSelectionCommand { get; }
+
+		public IEnumerable<Box> Boxes
 		{
-			get => _boxes;
-			set
-			{
-				_boxes = value;
-				RaisePropertyChanged();
-			}
+			get { return NotifyPropertyGet(() => Boxes); }
+			set { NotifyPropertySet(() => Boxes, value); }
+		}
+
+		public bool ShowMoreBoxesFeature
+		{
+			get { return NotifyPropertyGet(() => ShowMoreBoxesFeature); }
+			set { NotifyPropertySet(() => ShowMoreBoxesFeature, value); }
+		}
+
+		public Box SelectedMysteryBox
+		{
+			get { return NotifyPropertyGet(() => SelectedMysteryBox); }
+			set { NotifyPropertySet(() => SelectedMysteryBox, value); }
+		}
+
+		private void ShowMoreBoxes()
+		{
+			ShowMoreBoxesFeature = false;
+			Boxes = _tempBoxes;
 		}
 
 		private void SendRequest()
@@ -57,8 +199,34 @@ namespace BinanceNFT.ViewModels
 			Clipboard.SetText(boxesResponse);
 
 			var boxes = JsonConvert.DeserializeObject<Boxes>(boxesResponse);
-			if (boxes != null) 
-				Boxes = new List<Box>(boxes.Data);
+
+			_tempBoxes = boxes?.Data.ToList();
+
+			if (boxes == null)
+				return;
+
+			var tempList = new List<Box>();
+			for (var i = 0; i < _startIndex; i++)
+				tempList.Add(boxes.Data[i]);
+
+			Boxes = tempList;
+			ShowMoreBoxesFeature = true;
+		}
+
+		private void MysteryBoxSelectionExecutor(Box selectedMysteryBox)
+		{
+			SelectedMysteryBox = selectedMysteryBox;
+		}
+
+		/// <summary>
+		/// Gets the current mouse position on the screen
+		/// </summary>
+		private Point GetMousePosition()
+		{
+			var position = Mouse.GetPosition(_window);
+			var pointPosition = new Point(position.X + _window.Left, position.Y + _window.Top);
+
+			return pointPosition;
 		}
 	}
 }

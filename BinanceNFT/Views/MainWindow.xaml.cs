@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BinanceNFT.Helpers;
-using BinanceNFT.Models;
-using Newtonsoft.Json;
+﻿using System.Windows;
+using BinanceNFT.ViewModels;
 
-namespace BinanceNFT
+namespace BinanceNFT.Views
 {
 	public partial class MainWindow : Window
 	{
 		public MainWindow()
 		{
 			InitializeComponent();
+			DataContext = new MainWindowViewModel(this);
 		}
 	}
 }
